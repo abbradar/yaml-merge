@@ -4,16 +4,16 @@ import sys
 import yaml
 
 # Mutating recursive dictionary merge
-def merge(from, to):
-  if isinstance(from, dict) and isinstance(to, dict):
-    for k, v in from.iteritems():
-      if k in to:
-        to[k] = merge(v, to[k])
+def merge(a, b):
+  if isinstance(a, dict) and isinstance(b, dict):
+    for k, v in b.iteritems():
+      if k in a:
+        a[k] = merge(a[k], v)
       else:
-        to[k] = v
-    return to
+        a[k] = v
+    return a
   else:
-    return from
+    return b
 
 if len(sys.argv) < 3:
   sys.exit("Usage: yaml-merge.py file1.yaml file2.yaml")
