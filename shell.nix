@@ -1,7 +1,7 @@
 with import <nixpkgs> {};
 
-(python.buildEnv.override {
-  extraLibs = with pythonPackages;
+(python3.buildEnv.override {
+  extraLibs = with python3Packages;
     [ pyyaml
     ];
 }).env
