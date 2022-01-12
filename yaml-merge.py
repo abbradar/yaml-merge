@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import yaml
@@ -11,31 +11,25 @@ except ImportError:
 
 # Mutating recursive dictionary merge
 def merge(a, b):
-  if isinstance(a, dict) and isinstance(b, dict):
-    for k, v in b.items():
-      if k in a:
-        a[k] = merge(a[k], v)
-      else:
-        a[k] = v
-    return a
-  else:
-    return b
+    if isinstance(a, dict) and isinstance(b, dict):
+        for k, v in b.items():
+            if k in a:
+                a[k] = merge(a[k], v)
+            else:
+                a[k] = v
+        return a
+    else:
+        return b
 
-if len(sys.argv) < 3:
-  sys.exit("Usage: yaml-merge.py file1.yaml file2.yaml")
 
-file1_name = sys.argv[1]
-file2_name = sys.argv[2]
+def load_file(name):
+    with open(name) as f:
+        return yaml.load(f, Loader=Loader)
 
-# Either I don't know a better way, or Python gets ugly...
-file1 = None
-with open(file1_name) as f:
-  file1 = yaml.load(f, Loader=Loader)
 
-file2 = None
-with open(file2_name) as f:
-  file2 = yaml.load(f, Loader=Loader)
-
-result = merge(file1, file2)
-
+file_names = sys.argv[1:]
+files = [load_file(name) for name in file_names]
+result = {}
+for data in files:
+    result = merge(result, data)
 print(yaml.dump(result, Dumper=Dumper))
